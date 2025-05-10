@@ -1,0 +1,63 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: healthy-sys
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/healthy_sys
+    username: root
+    password: 123
+  redis:
+    database: 0
+    #    host: localhost
+    host: 118.25.228.235
+    port: 6379
+    timeout: 5000
+    password: 123123
+  rabbitmq:
+    #    host: localhost
+    host: 118.25.228.235
+    port: 5672
+    password: guest
+    username: guest
+# mybatis-plus
+mybatis-plus:
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+# knife4j
+knife4j:
+  enable: true
+  openapi:
+    title: "个人健康信息管理与智能建议系统接口文档"
+    description: "个人健康信息管理与智能建议系统接口文档"
+    version: "1.0"
+    license: Apache 2.0
+    license-url: https://stackoverflow.com/
+    terms-of-service-url: https://www.xiaobaitiao.top
+    group:
+      test1:
+        group-name: default
+        api-rule: package
+        api-rule-resources:
+          - com.naiyin.healthy.controller
+# jwt配置
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: mall-jwt-test #jwt加解密使用的密钥
+  expiration: 360000000 #JWT的超时时间
+  tokenHead: Bearer #JWT负载中拿到的开头
+xunfei:
+  client:
+    appid: 640ef180
+    apiSecret: MDBkYzczMGI2NjIyNDg3YmI3ZTU3ZWU1
+    apiKey: e5046cc7d1288c59bf30cbb282a9b88c

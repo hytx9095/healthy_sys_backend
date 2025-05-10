@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.naiyin.healthy.mapper.DoctorInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.naiyin.healthy.model.entity.DoctorInfo">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="type" column="type" jdbcType="INTEGER"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="evidence" column="evidence" jdbcType="VARCHAR"/>
+            <result property="operationTime" column="operation_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,type,
+        description,evidence,operation_time,
+        create_time,is_delete
+    </sql>
+
+    <select id="selectAllDoctorInfo" resultType="com.naiyin.healthy.model.vo.DoctorInfoVO">
+        SELECT
+        di.id,
+        di.user_id,
+        u.username,
+        u.user_avatar,
+        di.type,
+        di.description,
+        di.evidence,
+        di.status,
+        di.create_time
+        FROM
+        doctor_info di
+        LEFT JOIN
+        user u ON di.user_id = u.id
+        WHERE
+        di.is_delete = 0
+        AND u.is_delete = 0
+        <if test="doctorName != null and doctorName != ''">
+            AND u.username LIKE CONCAT('%', #{doctorName}, '%')
+        </if>
+        ORDER BY
+        di.create_time DESC
+    </select>
+
+    <select id="selectPassedDoctorInfo" resultType="com.naiyin.healthy.model.vo.DoctorInfoVO">
+        SELECT
+        di.id,
+        di.user_id,
+        u.username,
+        u.user_avatar,
+        di.type,
+        di.description,
+        di.evidence,
+        di.status,
+        di.create_time
+        FROM
+        doctor_info di
+        LEFT JOIN
+        user u ON di.user_id = u.id
+        WHERE
+        di.is_delete = 0
+        AND u.is_delete = 0
+        AND di.status = 1
+        <if test="doctorName != null and doctorName != ''">
+            AND u.username LIKE CONCAT('%', #{doctorName}, '%')
+        </if>
+        ORDER BY
+        di.create_time DESC
+    </select>
+
+    <select id="selectExaminedDoctorInfo" resultType="com.naiyin.healthy.model.vo.DoctorInfoVO">
+        SELECT
+        di.id,
+        di.user_id,
+        u.username,
+        u.user_avatar,
+        di.type,
+        di.description,
+        di.evidence,
+        di.status,
+        di.create_time
+        FROM
+        doctor_info di
+        LEFT JOIN
+        user u ON di.user_id = u.id
+        WHERE
+        di.is_delete = 0
+        AND u.is_delete = 0
+        AND di.status in (1, 2)
+        <if test="doctorName != null and doctorName != ''">
+            AND u.username LIKE CONCAT('%', #{doctorName}, '%')
+        </if>
+        ORDER BY
+        di.create_time DESC
+    </select>
+
+    <select id="selectNotExaminedDoctorInfo" resultType="com.naiyin.healthy.model.vo.DoctorInfoVO">
+        SELECT
+        di.id,
+        di.user_id,
+        u.username,
+        u.user_avatar,
+        di.type,
+        di.description,
+        di.evidence,
+        di.status,
+        di.create_time
+        FROM
+        doctor_info di
+        LEFT JOIN
+        user u ON di.user_id = u.id
+        WHERE
+        di.is_delete = 0
+        AND u.is_delete = 0
+        AND di.status = 0
+        <if test="doctorName != null and doctorName != ''">
+            AND u.username LIKE CONCAT('%', #{doctorName}, '%')
+        </if>
+        ORDER BY
+        di.create_time DESC
+    </select>
+</mapper>

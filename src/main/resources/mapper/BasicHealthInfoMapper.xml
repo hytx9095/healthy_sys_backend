@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.naiyin.healthy.mapper.BasicHealthInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.naiyin.healthy.model.entity.BasicHealthInfo">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="gender" column="gender" jdbcType="VARCHAR"/>
+            <result property="age" column="age" jdbcType="INTEGER"/>
+            <result property="height" column="height" jdbcType="DOUBLE"/>
+            <result property="weight" column="weight" jdbcType="DOUBLE"/>
+            <result property="leftEyeVision" column="left_eye_vision" jdbcType="DOUBLE"/>
+            <result property="rightEyeVision" column="right_eye_vision" jdbcType="DOUBLE"/>
+            <result property="bloodPressure" column="blood_pressure" jdbcType="DOUBLE"/>
+            <result property="bodyTemperature" column="body_temperature" jdbcType="DOUBLE"/>
+            <result property="heartRate" column="heart_rate" jdbcType="INTEGER"/>
+            <result property="vitalCapacity" column="vital_capacity" jdbcType="INTEGER"/>
+            <result property="operationTime" column="operation_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,gender,
+        age,height,weight,
+        left_eye_vision,right_eye_vision,blood_pressure,
+        body_temperature,heart_rate,vital_capacity,
+        operation_time,create_time,is_delete
+    </sql>
+</mapper>
