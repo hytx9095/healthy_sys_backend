@@ -33,6 +33,8 @@ public interface HealthyKnowledgeMapper extends BaseMapper<HealthyKnowledge> {
 
     // Mapper 接口
     List<HealthyKnowledgeVO> selectByTagList(@Param("tags") List<String> tags);
+
+    List<HealthyKnowledgeVO> selectNewHealthyKnowledgeList(@Param("num") Integer num);
 }
 
 

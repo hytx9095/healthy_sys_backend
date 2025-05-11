@@ -32,7 +32,9 @@ import com.naiyin.healthy.service.UserTagsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -181,9 +183,24 @@ public class HealthyKnowledgeServiceImpl extends ServiceImpl<HealthyKnowledgeMap
 
     @Override
     public List<HealthyKnowledgeVO> getHomeHealthyKnowledgePage(HealthyKnowledgeQueryDTO healthyKnowledgeQueryDTO) {
-        UserTags userTags = userTagsService.lambdaQuery().eq(UserTags::getUserId, UserContext.getUserId()).one();
+        UserTags userTags = userTagsService.lambdaQuery()
+                .eq(UserTags::getUserId, UserContext.getUserId())
+                .between(UserTags::getCreateTime,
+                        LocalDate.now().atStartOfDay(),
+                        LocalDate.now().atTime(23, 59, 59))
+                .one();
+        if (ObjectUtil.isNull(userTags)){
+            throw new CommonException(SysErrorEnum.NOT_FOUND_ERROR, "信息不存在");
+        }
         List<String> list = JSONUtil.toList(userTags.getTags(), String.class);
         List<HealthyKnowledgeVO> healthyKnowledgeVOList = healthyKnowledgeMapper.selectByTagList(list);
+        if (healthyKnowledgeVOList.size() < 9){
+            List<HealthyKnowledgeVO> newHealthyKnowledgeVOList = healthyKnowledgeMapper.selectNewHealthyKnowledgeList(9 - healthyKnowledgeVOList.size());
+            for (HealthyKnowledgeVO healthyKnowledgeVO : newHealthyKnowledgeVOList) {
+                healthyKnowledgeVOList.add(healthyKnowledgeVO);
+            }
+            return healthyKnowledgeVOList;
+        }
         return healthyKnowledgeVOList;
     }
 

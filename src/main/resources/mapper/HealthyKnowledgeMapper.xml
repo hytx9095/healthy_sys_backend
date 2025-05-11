@@ -137,4 +137,12 @@
         ORDER BY create_time DESC
         LIMIT 9
     </select>
+
+    <select id="selectNewHealthyKnowledgeList" resultType="com.naiyin.healthy.model.vo.HealthyKnowledgeVO">
+        SELECT *
+        FROM healthy_knowledge
+        WHERE is_delete = 0 AND status = 1
+        ORDER BY create_time DESC
+        LIMIT #{num}
+    </select>
 </mapper>
