@@ -224,6 +224,16 @@ public class HealthyKnowledgeServiceImpl extends ServiceImpl<HealthyKnowledgeMap
     }
 
     @Override
+    public IPage<HealthyKnowledgeVO> getStarHealthyKnowledgePageById(HealthyKnowledgeQueryDTO healthyKnowledgeQueryDTO) {
+        long pageSize = healthyKnowledgeQueryDTO.getPageSize();
+        long current = healthyKnowledgeQueryDTO.getCurrent();
+        Page<HealthyKnowledgeVO> page = new Page<>(current, pageSize);
+        IPage<HealthyKnowledgeVO> healthyKnowledgePage = healthyKnowledgeMapper
+                .getHealthyKnowledgePageById(page, UserContext.getUserId());
+        return healthyKnowledgePage;
+    }
+
+    @Override
     public IPage<HealthyKnowledgeVO> getStarredHealthyKnowledgePage(HealthyKnowledgeQueryDTO healthyKnowledgeQueryDTO) {
         long pageSize = healthyKnowledgeQueryDTO.getPageSize();
         long current = healthyKnowledgeQueryDTO.getCurrent();

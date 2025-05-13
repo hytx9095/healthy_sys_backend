@@ -16,6 +16,12 @@ public class HealthyKnowledgeExamineDTO implements Serializable {
      * 健康知识id
      */
     private  Long healthyKnowledgeId;
+
+    /**
+     * 用户id
+     */
+    private Long userId;
+
     /**
      * 结果
      */

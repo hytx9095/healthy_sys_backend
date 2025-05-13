@@ -9,10 +9,13 @@ import com.naiyin.healthy.exception.CommonException;
 import com.naiyin.healthy.model.dto.healthyKnowledge.HealthyKnowledgeExamineDTO;
 import com.naiyin.healthy.model.entity.HealthyKnowledge;
 import com.naiyin.healthy.model.entity.HealthyKnowledgeExamine;
+import com.naiyin.healthy.model.entity.Message;
 import com.naiyin.healthy.service.HealthyKnowledgeExamineService;
 import com.naiyin.healthy.mapper.HealthyKnowledgeExamineMapper;
 import com.naiyin.healthy.service.HealthyKnowledgeService;
+import com.naiyin.healthy.service.MessageService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,11 +27,13 @@ import javax.annotation.Resource;
 * @createDate 2025-04-13 13:21:13
 */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class HealthyKnowledgeExamineServiceImpl extends ServiceImpl<HealthyKnowledgeExamineMapper, HealthyKnowledgeExamine>
     implements HealthyKnowledgeExamineService{
 
     private final HealthyKnowledgeService healthyKnowledgeService;
+    private final MessageService messageService;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -55,6 +60,15 @@ public class HealthyKnowledgeExamineServiceImpl extends ServiceImpl<HealthyKnowl
             if (!update){
                 throw new CommonException(SysErrorEnum.OPERATION_ERROR, "更新失败");
             }
+            // 发送消息
+            Message message = new Message();
+            message.setUserId(healthyKnowledgeExamineDTO.getUserId());
+            message.setContent("您分享的健康知识没有通过审核，原因：" + description);
+            message.setStatus(1);
+            boolean saveMessage = messageService.save(message);
+            if (!saveMessage){
+                throw new CommonException(SysErrorEnum.OPERATION_ERROR, "发送消息失败");
+            }
         }
         if (result.equals(HealthyKnowledgeExamineEnum.PASS.getText())){
             healthyKnowledgeExamine.setHealthyKnowledgeId(healthyKnowledgeId);
@@ -71,8 +85,16 @@ public class HealthyKnowledgeExamineServiceImpl extends ServiceImpl<HealthyKnowl
             if (!update){
                 throw new CommonException(SysErrorEnum.OPERATION_ERROR, "更新失败");
             }
+            // 发送消息
+            Message message = new Message();
+            message.setUserId(healthyKnowledgeExamineDTO.getUserId());
+            message.setContent("您分享的健康知识通过审核");
+            message.setStatus(1);
+            boolean saveMessage = messageService.save(message);
+            if (!saveMessage){
+                throw new CommonException(SysErrorEnum.OPERATION_ERROR, "发送消息失败");
+            }
         }
-
     }
 }
 

@@ -3,10 +3,7 @@ package com.naiyin.healthy.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoExamineDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoQueryDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoUpdateDTO;
+import com.naiyin.healthy.model.dto.doctorInfo.*;
 import com.naiyin.healthy.model.entity.DoctorInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.naiyin.healthy.model.vo.DoctorInfoVO;
@@ -35,4 +32,6 @@ public interface DoctorInfoService extends IService<DoctorInfo> {
     DoctorInfoVO getDoctorInfoVO(DoctorInfo doctorInfo);
 
     void examineDoctorInfo(DoctorInfoExamineDTO doctorInfoExamineDTO);
+
+    DoctorInfo getDoctorInfoByUserId(GetDoctorInfoDTO getDoctorInfoDTO);
 }

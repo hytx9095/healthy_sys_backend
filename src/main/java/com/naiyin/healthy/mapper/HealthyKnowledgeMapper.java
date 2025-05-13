@@ -22,6 +22,9 @@ public interface HealthyKnowledgeMapper extends BaseMapper<HealthyKnowledge> {
                                                       @Param("userId") Long userId,
                                                       @Param("status") Integer status);
 
+    IPage<HealthyKnowledgeVO> getHealthyKnowledgePageById(Page<HealthyKnowledgeVO> page,
+                                                      @Param("userId") Long userId);
+
     IPage<HealthyKnowledgeVO> getHealthyKnowledgePageByContent(Page<HealthyKnowledgeVO> page,
                                                       @Param("userId") Long userId,
                                                       @Param("status") Integer status,
@@ -31,7 +34,6 @@ public interface HealthyKnowledgeMapper extends BaseMapper<HealthyKnowledge> {
                                                       @Param("userId") Long userId,
                                                       @Param("status") Integer status);
 
-    // Mapper 接口
     List<HealthyKnowledgeVO> selectByTagList(@Param("tags") List<String> tags);
 
     List<HealthyKnowledgeVO> selectNewHealthyKnowledgeList(@Param("num") Integer num);

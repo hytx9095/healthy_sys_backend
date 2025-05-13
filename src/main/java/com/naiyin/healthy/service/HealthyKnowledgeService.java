@@ -28,6 +28,7 @@ public interface HealthyKnowledgeService extends IService<HealthyKnowledge> {
     void addHealthyKnowledge(HealthyKnowledgeDTO healthyKnowledgeDTO);
 
     IPage<HealthyKnowledgeVO> getStarHealthyKnowledgePage(HealthyKnowledgeQueryDTO healthyKnowledgeQueryDTO);
+    IPage<HealthyKnowledgeVO> getStarHealthyKnowledgePageById(HealthyKnowledgeQueryDTO healthyKnowledgeQueryDTO);
     IPage<HealthyKnowledgeVO> getStarredHealthyKnowledgePage(HealthyKnowledgeQueryDTO healthyKnowledgeQueryDTO);
 
 

@@ -67,6 +67,16 @@ public class HealthyKnowledgeController {
     /**
      * 分页获取健康知识
      */
+    @PostMapping("/page/vo/my")
+    @ApiOperation("获取健康知识（分页）")
+    public R<IPage<HealthyKnowledgeVO>> getStarHealthyKnowledgeVOPageById(@RequestBody HealthyKnowledgeQueryDTO healthyKnowledgeQueryDTO) {
+        IPage<HealthyKnowledgeVO> healthyKnowledgePage = healthyKnowledgeService.getStarHealthyKnowledgePageById(healthyKnowledgeQueryDTO);
+        return R.success(healthyKnowledgePage);
+    }
+
+    /**
+     * 分页获取健康知识
+     */
     @PostMapping("/page/vo/starred")
     @ApiOperation("获取健康知识（分页）")
     public R<IPage<HealthyKnowledgeVO>> getStarredHealthyKnowledgeVOPage(@RequestBody HealthyKnowledgeQueryDTO healthyKnowledgeQueryDTO) {

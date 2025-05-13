@@ -14,10 +14,7 @@ import com.naiyin.healthy.enums.DoctorInfoExamineEnum;
 import com.naiyin.healthy.enums.DoctorInfoStatusEnum;
 import com.naiyin.healthy.enums.SysErrorEnum;
 import com.naiyin.healthy.exception.CommonException;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoExamineDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoQueryDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoUpdateDTO;
+import com.naiyin.healthy.model.dto.doctorInfo.*;
 import com.naiyin.healthy.model.entity.DoctorExamine;
 import com.naiyin.healthy.model.entity.DoctorInfo;
 import com.naiyin.healthy.model.entity.User;
@@ -70,7 +67,6 @@ public class DoctorInfoServiceImpl extends ServiceImpl<DoctorInfoMapper, DoctorI
     @Override
     public void updateDoctorInfo(DoctorInfoUpdateDTO updateDTO) {
         DoctorInfo doctorInfo = BeanUtil.copyProperties(updateDTO, DoctorInfo.class);
-        doctorInfo.setUserId(UserContext.getUserId());
         doctorInfo.setId(updateDTO.getDoctorId());
         boolean result = updateById(doctorInfo);
         if (!result){
@@ -201,6 +197,20 @@ public class DoctorInfoServiceImpl extends ServiceImpl<DoctorInfoMapper, DoctorI
                 throw new CommonException(SysErrorEnum.OPERATION_ERROR, "更新失败");
             }
         }
+    }
+
+    @Override
+    public DoctorInfo getDoctorInfoByUserId(GetDoctorInfoDTO getDoctorInfoDTO) {
+        if (ObjectUtil.isNull(getDoctorInfoDTO.getUserId())){
+            throw new CommonException(SysErrorEnum.PARAM_ERROR, "参数错误");
+        }
+        DoctorInfo doctorInfo = lambdaQuery()
+                .eq(DoctorInfo::getUserId, getDoctorInfoDTO.getUserId())
+                .one();
+        if (doctorInfo == null){
+            throw new CommonException(SysErrorEnum.NOT_FOUND_ERROR, "信息不存在");
+        }
+        return doctorInfo;
     }
 
 }

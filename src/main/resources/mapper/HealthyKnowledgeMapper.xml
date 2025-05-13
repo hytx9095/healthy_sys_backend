@@ -18,6 +18,7 @@
         id,type,content,
         operation_time,create_time,is_delete
     </sql>
+
     <select id="getHealthyKnowledgePageByContent" resultType="com.naiyin.healthy.model.vo.HealthyKnowledgeVO">
         SELECT
             hk.id,
@@ -52,6 +53,40 @@
             hk.create_time DESC
     </select>
 
+    <select id="getHealthyKnowledgePageById" resultType="com.naiyin.healthy.model.vo.HealthyKnowledgeVO">
+        SELECT
+            hk.id,
+            hk.user_id,
+            hk.type,
+            hk.tags,
+            hk.content,
+            hk.status,
+            hk.create_time,
+            CASE
+                WHEN hks.id IS NOT NULL AND hks.is_delete = 0 THEN 1
+                ELSE 0
+                END AS is_starred,
+            u.username AS username,
+            u.user_avatar AS user_avatar
+        FROM
+            healthy_knowledge hk
+                LEFT JOIN
+            healthy_knowledge_star hks
+            ON
+                        hks.healthy_knowledge_id = hk.id
+                    AND hks.user_id = #{userId}
+                    AND hks.is_delete = 0
+                LEFT JOIN
+            user u
+            ON
+                u.id = hk.user_id
+        WHERE
+            hk.is_delete = 0
+          and hk.user_id = #{userId}
+        ORDER BY
+            hk.create_time DESC
+    </select>
+
     <select id="getHealthyKnowledgePage" resultType="com.naiyin.healthy.model.vo.HealthyKnowledgeVO">
         SELECT
             hk.id,
@@ -82,6 +117,9 @@
         WHERE
             hk.is_delete = 0
           AND hk.status = #{status}
+<!--        <if test="userId != null">-->
+<!--            And hk.user_id = #{creatorId}-->
+<!--        </if>-->
         ORDER BY
             hk.create_time DESC
     </select>

@@ -6,10 +6,7 @@ import com.naiyin.healthy.common.R;
 import com.naiyin.healthy.enums.SysErrorEnum;
 import com.naiyin.healthy.exception.CommonException;
 import com.naiyin.healthy.model.dto.common.CommonDeleteDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoExamineDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoQueryDTO;
-import com.naiyin.healthy.model.dto.doctorInfo.DoctorInfoUpdateDTO;
+import com.naiyin.healthy.model.dto.doctorInfo.*;
 import com.naiyin.healthy.model.entity.DoctorInfo;
 import com.naiyin.healthy.model.vo.DoctorInfoVO;
 import com.naiyin.healthy.service.DoctorInfoService;
@@ -32,6 +29,13 @@ public class DoctorInfoController {
     @ApiOperation("获取医生信息")
     public R<DoctorInfo> getDoctorInfo(@PathVariable Long doctorInfoId) {
         DoctorInfo doctorInfo = doctorInfoService.getDoctorInfo(doctorInfoId);
+        return R.success(doctorInfo);
+    }
+
+    @PostMapping("/get")
+    @ApiOperation("获取医生信息")
+    public R<DoctorInfo> getDoctorInfoByUserId(@RequestBody GetDoctorInfoDTO getDoctorInfoDTO) {
+        DoctorInfo doctorInfo = doctorInfoService.getDoctorInfoByUserId(getDoctorInfoDTO);
         return R.success(doctorInfo);
     }
 
