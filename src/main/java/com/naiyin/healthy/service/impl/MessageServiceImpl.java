@@ -18,7 +18,6 @@ import com.naiyin.healthy.service.MessageAllService;
 import com.naiyin.healthy.service.MessageService;
 import com.naiyin.healthy.mapper.MessageMapper;
 import com.naiyin.healthy.service.comon.TaskService;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

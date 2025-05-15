@@ -1,7 +1,6 @@
 package com.naiyin.healthy.task;
 
 import cn.hutool.json.JSONUtil;
-import com.naiyin.healthy.common.UserContext;
 import com.naiyin.healthy.mapper.DietInfoMapper;
 import com.naiyin.healthy.mapper.DiseaseInfoMapper;
 import com.naiyin.healthy.mapper.SportInfoMapper;
@@ -9,13 +8,10 @@ import com.naiyin.healthy.model.entity.*;
 import com.naiyin.healthy.rabbitmq.MQMessageProducer;
 import com.naiyin.healthy.service.BasicHealthInfoService;
 import com.naiyin.healthy.service.UserService;
-import com.naiyin.healthy.service.UserTagsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -23,7 +19,6 @@ import java.util.List;
 public class ScheduledTasks {
 
     private final UserService userService;
-    private final UserTagsService userTagsService;
     private final MQMessageProducer mqMessageProducer;
     private final BasicHealthInfoService basicHealthInfoService;
     private final DietInfoMapper dietInfoMapper;
@@ -32,7 +27,7 @@ public class ScheduledTasks {
 
     // 每天的特定时间执行一次
     @Scheduled(cron = "0 0 0 * * ?")
-    public void doTaskEveryDayAtNoon() {
+    public void generateUserTagsEveryDay() {
         List<User> list = userService.lambdaQuery().list();
         list.forEach(user -> sendMessage(user.getId()));
     }

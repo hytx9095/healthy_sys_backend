@@ -34,6 +34,5 @@ public class MQInitMain {
         } catch (Exception e) {
 
         }
-
     }
 }
