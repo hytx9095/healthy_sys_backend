@@ -22,6 +22,11 @@ public class Suggestion extends Base {
     private String title;
 
     /**
+     * 建议标题
+     */
+    private String question;
+
+    /**
      * 内容
      */
     private String content;

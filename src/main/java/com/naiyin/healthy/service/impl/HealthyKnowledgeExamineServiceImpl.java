@@ -14,6 +14,7 @@ import com.naiyin.healthy.service.HealthyKnowledgeExamineService;
 import com.naiyin.healthy.mapper.HealthyKnowledgeExamineMapper;
 import com.naiyin.healthy.service.HealthyKnowledgeService;
 import com.naiyin.healthy.service.MessageService;
+import com.naiyin.healthy.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,6 @@ public class HealthyKnowledgeExamineServiceImpl extends ServiceImpl<HealthyKnowl
 
     private final HealthyKnowledgeService healthyKnowledgeService;
     private final MessageService messageService;
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)

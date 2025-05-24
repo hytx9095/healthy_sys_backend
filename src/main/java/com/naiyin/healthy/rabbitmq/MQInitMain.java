@@ -12,7 +12,8 @@ public class MQInitMain {
     public static void main(String[] args) {
         try {
             ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("118.25.228.235");
+//            factory.setHost("118.25.228.235");
+            factory.setHost("localhost");
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
             String EXCHANGE_NAME =  MQMqConstant.HEALTHY_EXCHANGE;

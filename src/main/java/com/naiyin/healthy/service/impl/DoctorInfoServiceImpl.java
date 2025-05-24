@@ -17,11 +17,13 @@ import com.naiyin.healthy.exception.CommonException;
 import com.naiyin.healthy.model.dto.doctorInfo.*;
 import com.naiyin.healthy.model.entity.DoctorExamine;
 import com.naiyin.healthy.model.entity.DoctorInfo;
+import com.naiyin.healthy.model.entity.Message;
 import com.naiyin.healthy.model.entity.User;
 import com.naiyin.healthy.model.vo.DoctorInfoVO;
 import com.naiyin.healthy.service.DoctorExamineService;
 import com.naiyin.healthy.service.DoctorInfoService;
 import com.naiyin.healthy.mapper.DoctorInfoMapper;
+import com.naiyin.healthy.service.MessageService;
 import com.naiyin.healthy.service.UserService;
 import com.naiyin.healthy.util.SqlUtils;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,10 @@ public class DoctorInfoServiceImpl extends ServiceImpl<DoctorInfoMapper, DoctorI
     private DoctorExamineService doctorExamineService;
     @Resource
     private DoctorInfoMapper doctorInfoMapper;
+
+    @Resource
+    private MessageService messageService;
+
 
     @Override
     public DoctorInfo getDoctorInfo(Long doctorInfoId) {
@@ -176,6 +182,15 @@ public class DoctorInfoServiceImpl extends ServiceImpl<DoctorInfoMapper, DoctorI
             if (!update){
                 throw new CommonException(SysErrorEnum.OPERATION_ERROR, "更新失败");
             }
+            // 发送消息
+            Message message = new Message();
+            message.setUserId(doctorInfoExamineDTO.getUserId());
+            message.setContent("您的医生申请没有通过审核，原因：" + description);
+            message.setStatus(1);
+            boolean saveMessage = messageService.save(message);
+            if (!saveMessage){
+                throw new CommonException(SysErrorEnum.OPERATION_ERROR, "发送消息失败");
+            }
         }
         if (result.equals(DoctorInfoExamineEnum.PASS.getText())){
             doctorInfoExamine.setDoctorInfoId(doctorInfoId);
@@ -190,6 +205,23 @@ public class DoctorInfoServiceImpl extends ServiceImpl<DoctorInfoMapper, DoctorI
             doctorInfo.setStatus(DoctorInfoStatusEnum.PASS.getValue());
             boolean update = updateById(doctorInfo);
             if (!update){
+                throw new CommonException(SysErrorEnum.OPERATION_ERROR, "更新失败");
+            }
+            // 发送消息
+            Message message = new Message();
+            message.setUserId(doctorInfoExamineDTO.getUserId());
+            message.setContent("您的医生申请通过审核");
+            message.setStatus(1);
+            boolean saveMessage = messageService.save(message);
+            if (!saveMessage){
+                throw new CommonException(SysErrorEnum.OPERATION_ERROR, "发送消息失败");
+            }
+            // 修改角色
+            User user = new User();
+            user.setId(doctorInfoExamineDTO.getUserId());
+            user.setRole("doctor");
+            boolean b = userService.updateById(user);
+            if (!b){
                 throw new CommonException(SysErrorEnum.OPERATION_ERROR, "更新失败");
             }
         }

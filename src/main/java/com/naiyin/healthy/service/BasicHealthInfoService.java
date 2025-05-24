@@ -4,6 +4,8 @@ import com.naiyin.healthy.model.dto.BasicHealthInfoDTO;
 import com.naiyin.healthy.model.entity.BasicHealthInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author wang'ren
 * @description 针对表【basic_health_info】的数据库操作Service
@@ -16,5 +18,7 @@ public interface BasicHealthInfoService extends IService<BasicHealthInfo> {
     void updateBasicHealthInfo(BasicHealthInfoDTO basicHealthInfoDTO);
 
     void addBasicHealthInfo(BasicHealthInfoDTO basicHealthInfoDTO);
+
+    List<String> getBasicHealthyKeys();
 }
 

@@ -24,6 +24,11 @@ public class SuggestionDTO implements Serializable {
     private String title;
 
     /**
+     * 问题
+     */
+    private String question;
+
+    /**
      * 内容
      */
     private String content;

@@ -22,6 +22,11 @@ public class RiskPrediction extends Base {
     private String title;
 
     /**
+     * 问题
+     */
+    private String question;
+
+    /**
      * 内容
      */
     private String content;

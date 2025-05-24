@@ -190,7 +190,9 @@ public class HealthyKnowledgeServiceImpl extends ServiceImpl<HealthyKnowledgeMap
                         LocalDate.now().atTime(23, 59, 59))
                 .one();
         if (ObjectUtil.isNull(userTags)){
-            throw new CommonException(SysErrorEnum.NOT_FOUND_ERROR, "信息不存在");
+            List<HealthyKnowledgeVO> newHealthyKnowledgeVOList =
+                    healthyKnowledgeMapper.selectNewHealthyKnowledgeList(9);
+            return newHealthyKnowledgeVOList;
         }
         List<String> list = JSONUtil.toList(userTags.getTags(), String.class);
         List<HealthyKnowledgeVO> healthyKnowledgeVOList = healthyKnowledgeMapper.selectByTagList(list);

@@ -19,6 +19,7 @@ import com.naiyin.healthy.model.entity.*;
 import com.naiyin.healthy.rabbitmq.MQMessageProducer;
 import com.naiyin.healthy.service.*;
 import com.naiyin.healthy.mapper.SuggestionMapper;
+import com.naiyin.healthy.util.HealthyInfoKeyUtils;
 import com.naiyin.healthy.util.SqlUtils;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class SuggestionServiceImpl extends ServiceImpl<SuggestionMapper, Suggest
     private final DietInfoMapper dietInfoMapper;
     private final DiseaseInfoMapper diseaseInfoMapper;
     private final SportInfoMapper sportInfoMapper;
+    private final HealthyInfoKeyUtils healthyInfoKeyUtils;
 
     @Override
     public Page<Suggestion> getSuggestions(SuggestionQueryDTO suggestionQueryDTO) {
@@ -65,22 +67,8 @@ public class SuggestionServiceImpl extends ServiceImpl<SuggestionMapper, Suggest
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void generateSuggestion() {
-        // 获取用户基础信息
-        BasicHealthInfo basicHealthInfo = basicHealthInfoService.lambdaQuery().eq(BasicHealthInfo::getUserId, UserContext.getUserId()).one();
-        // 获取用户饮食信息
-        List<DietInfo> dietInfos = dietInfoMapper.selectRecentDietsByUserId(UserContext.getUserId());
-        // 获取用户疾病信息
-        List<DiseaseInfo> diseaseInfos = diseaseInfoMapper.selectRecentDiseaseInfoByUserId(UserContext.getUserId());
-        // 获取用户运动信息
-        List<SportInfo> sportInfos = sportInfoMapper.selectRecentSportInfoByUserId(UserContext.getUserId());
-        UserAllHealthyInfo userAllHealthyInfo = new UserAllHealthyInfo();
-        userAllHealthyInfo.setUserId(UserContext.getUserId());
-        userAllHealthyInfo.setBasicHealthInfo(basicHealthInfo);
-        userAllHealthyInfo.setDietInfos(dietInfos);
-        userAllHealthyInfo.setDiseaseInfos(diseaseInfos);
-        userAllHealthyInfo.setSportInfos(sportInfos);
         // 发送到消息队列
-        mqMessageProducer.getSuggestionMessage(JSONUtil.toJsonStr(userAllHealthyInfo));
+        mqMessageProducer.getSuggestionMessage(JSONUtil.toJsonStr(healthyInfoKeyUtils.getHealthyInfoKeys()));
         // 修改当前建议状态
         List<Suggestion> list = lambdaQuery().eq(Suggestion::getUserId, UserContext.getUserId()).eq(Suggestion::getIsRead, 0).list();
 

@@ -13,6 +13,11 @@ public class DoctorInfoExamineDTO implements Serializable {
     private  Long doctorInfoId;
 
     /**
+     * 用户id
+     */
+    private Long userId;
+
+    /**
      * 结果
      */
     private String result;
