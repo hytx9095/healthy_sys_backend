@@ -1,7 +1,7 @@
 server:
   port: 8080
-  servlet:
-    context-path: /api
+#  servlet:
+#    context-path: /api
 spring:
   application:
     name: healthy-sys
@@ -20,8 +20,8 @@ spring:
     timeout: 5000
     password: 123123
   rabbitmq:
-    host: localhost
-#    host: 118.25.228.235
+#    host: localhost
+    host: 118.25.228.235
     port: 5672
     password: guest
     username: guest

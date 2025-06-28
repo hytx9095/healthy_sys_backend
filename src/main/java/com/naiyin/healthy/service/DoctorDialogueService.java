@@ -12,6 +12,7 @@ import com.naiyin.healthy.model.vo.DoctorContact;
 import com.naiyin.healthy.model.vo.DoctorDialogueVO;
 import com.naiyin.healthy.model.vo.UserContact;
 import com.naiyin.healthy.model.vo.UserVO;
+import com.naiyin.healthy.model.webSocket.ChatMessage;
 
 import java.util.List;
 
@@ -31,9 +32,13 @@ public interface DoctorDialogueService extends IService<DoctorDialogue> {
 
     void doctorAnswer(DoctorDialogueDTO doctorDialogueDTO);
 
+    void saveDialogue(ChatMessage chatMessage, Integer isRead);
+
     QueryWrapper<DoctorDialogue> getQueryWrapper(DoctorDialogueQueryDTO doctorDialogueQueryDTO);
 
     List<UserContact> getDoctorDialogueUser();
 
     List<DoctorContact> getDoctorDialogueDoctor();
+
+    void test();
 }

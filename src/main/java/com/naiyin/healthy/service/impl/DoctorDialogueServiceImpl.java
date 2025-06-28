@@ -19,6 +19,7 @@ import com.naiyin.healthy.model.entity.User;
 import com.naiyin.healthy.model.vo.DoctorContact;
 import com.naiyin.healthy.model.vo.DoctorDialogueVO;
 import com.naiyin.healthy.model.vo.UserContact;
+import com.naiyin.healthy.model.webSocket.ChatMessage;
 import com.naiyin.healthy.service.DoctorDialogueService;
 import com.naiyin.healthy.mapper.DoctorDialogueMapper;
 import com.naiyin.healthy.service.UserService;
@@ -110,6 +111,20 @@ public class DoctorDialogueServiceImpl extends ServiceImpl<DoctorDialogueMapper,
     }
 
     @Override
+    public void saveDialogue(ChatMessage chatMessage, Integer isRead) {
+        DoctorDialogue doctorDialogue = new DoctorDialogue();
+        doctorDialogue.setUserId(chatMessage.getUserId());
+        doctorDialogue.setDoctorId(chatMessage.getDoctorId());
+        doctorDialogue.setSpokesman(chatMessage.getRole());
+        doctorDialogue.setContent(chatMessage.getContent());
+        doctorDialogue.setStatus(isRead);
+        boolean userSave = save(doctorDialogue);
+        if (!userSave) {
+            throw new CommonException(SysErrorEnum.OPERATION_ERROR, "对话添加失败");
+        }
+    }
+
+    @Override
     public QueryWrapper<DoctorDialogue> getQueryWrapper(DoctorDialogueQueryDTO doctorDialogueQueryDTO) {
         if (doctorDialogueQueryDTO == null) {
             throw new CommonException(SysErrorEnum.PARAM_ERROR, "请求参数为空");
@@ -152,6 +167,11 @@ public class DoctorDialogueServiceImpl extends ServiceImpl<DoctorDialogueMapper,
             throw new CommonException(SysErrorEnum.OPERATION_ERROR, "更新失败");
         }
         return doctorDialogueVO;
+    }
+
+    @Override
+    public void test() {
+        System.out.println("===================================");
     }
 }
 

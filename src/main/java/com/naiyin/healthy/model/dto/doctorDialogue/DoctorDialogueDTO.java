@@ -11,6 +11,7 @@ public class DoctorDialogueDTO implements Serializable {
      * 用户id
      */
     private Long userId;
+
     /**
      * 医生id
      */
