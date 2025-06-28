@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/test")
-    @ApiOperation("密码登录")
+    @ApiOperation("test")
     public R<LoginVO> test(@RequestBody UserLoginFormDTO userLoginFormDTO) {
         LoginVO login = userService.login(userLoginFormDTO);
         return R.success(login);
