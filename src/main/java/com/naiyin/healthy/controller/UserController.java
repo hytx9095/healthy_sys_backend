@@ -39,6 +39,13 @@ public class UserController {
         return R.success(login);
     }
 
+    @PostMapping("/test")
+    @ApiOperation("密码登录")
+    public R<LoginVO> test(@RequestBody UserLoginFormDTO userLoginFormDTO) {
+        LoginVO login = userService.login(userLoginFormDTO);
+        return R.success(login);
+    }
+
     /**
      * 获取当前登录用户
      *
