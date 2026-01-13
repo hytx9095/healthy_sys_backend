@@ -9,6 +9,7 @@ import com.naiyin.healthy.model.vo.LoginVO;
 import com.naiyin.healthy.model.vo.UserVO;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface UserService extends IService<User> {
@@ -38,4 +39,6 @@ public interface UserService extends IService<User> {
     void updateUserRole(UserUpdateRoleDTO userUpdateRoleDTO);
 
     List<UserVO> getUserList(UserQueryDTO userQueryDTO);
+
+    void exportExcel(HttpServletResponse response);
 }

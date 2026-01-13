@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -31,6 +32,13 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/export/excel")
+    @ApiOperation("导出excel")
+    public R<Boolean> exportExcel(HttpServletResponse response) {
+        userService.exportExcel(response);
+        return R.success();
+    }
 
     @PostMapping("/login")
     @ApiOperation("密码登录")

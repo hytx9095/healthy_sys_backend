@@ -1,5 +1,7 @@
 package com.naiyin.healthy.service.impl;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
@@ -31,6 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -213,6 +218,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<User> list = lambdaQuery().like(User::getUsername, userQueryDTO.getUsername()).list();
         List<UserVO> userVOS = BeanUtil.copyToList(list, UserVO.class);
         return userVOS;
+    }
+
+    @Override
+    public void exportExcel(HttpServletResponse response) {
+        try {
+            List<User> list = lambdaQuery().list();
+            List<UserVO> userVOS = BeanUtil.copyToList(list, UserVO.class);
+            // 导出数据的名字为用户数据.xlsx
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("用户数据.xlsx", "UTF-8"));
+            ExcelExportUtil.exportExcel(new ExportParams(), UserVO.class, userVOS).write(response.getOutputStream());
+        } catch (IOException e){
+            throw new CommonException(SysErrorEnum.OPERATION_ERROR.getCode(), "导出数据失败");
+        }
     }
 
     @Override
